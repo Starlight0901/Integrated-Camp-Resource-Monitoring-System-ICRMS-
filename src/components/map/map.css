@@ -1,0 +1,277 @@
+.cw-map.leaflet-container {
+  background: var(--cw-map-container);
+  font-family: inherit;
+}
+
+.cw-map .leaflet-control-zoom {
+  border: none !important;
+  box-shadow: none !important;
+  margin-top: 12px !important;
+  margin-left: 12px !important;
+}
+
+.cw-map .leaflet-control-zoom a {
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  background: var(--cw-map-control-bg) !important;
+  color: var(--cw-text-muted) !important;
+  border: 1px solid var(--cw-border) !important;
+  border-radius: var(--radius-cw-sm) !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.cw-map .leaflet-control-zoom a:hover {
+  background: var(--cw-surface-hover) !important;
+  border-color: var(--cw-border) !important;
+  color: var(--cw-text) !important;
+}
+
+.cw-map .leaflet-control-attribution {
+  background: var(--cw-map-attribution-bg) !important;
+  color: var(--cw-text-dim) !important;
+  border-radius: var(--radius-cw-sm) 0 0 0;
+  padding: 2px 6px !important;
+  font-size: 9px !important;
+}
+
+.cw-map .leaflet-control-attribution a {
+  color: var(--cw-text-muted) !important;
+}
+
+/* Map frame — no decorative vignette overlay */
+.cw-map-frame::before,
+.cw-map-frame::after {
+  content: none;
+}
+
+/* Custom camp markers */
+.camp-marker-wrapper {
+  background: transparent !important;
+  border: none !important;
+}
+
+.camp-marker {
+  width: 120px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.camp-marker:hover .camp-marker__pin {
+  transform: scale(1.05);
+  transform-origin: center top;
+}
+
+.camp-marker:hover {
+  z-index: 1000 !important;
+}
+
+.camp-marker__pin {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.camp-marker__ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  border-radius: 50%;
+  border: 1.5px solid var(--cw-status-critical);
+  animation: camp-marker-pulse 2.8s ease-out infinite;
+  pointer-events: none;
+}
+
+.camp-marker__ring--warning {
+  border-color: var(--cw-status-warning);
+}
+
+.camp-marker__ring--critical {
+  border-color: var(--cw-status-critical);
+}
+
+.camp-marker__alarm-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  z-index: 4;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 4px;
+  border-radius: 9999px;
+  background: var(--cw-status-critical);
+  color: white;
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 15px;
+  text-align: center;
+  border: 1.5px solid var(--cw-map-marker-border);
+}
+
+.camp-marker--alarm:has(.camp-marker__ring--warning) .camp-marker__alarm-badge {
+  background: var(--cw-status-warning);
+}
+
+.camp-marker--alarm .camp-marker__dot--warning {
+  box-shadow: 0 0 10px rgb(245 158 11 / 0.4);
+}
+
+.camp-marker--alarm .camp-marker__dot--critical {
+  box-shadow: 0 0 12px rgb(239 68 68 / 0.5);
+}
+
+@keyframes camp-marker-pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  75% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.camp-marker__dot {
+  position: relative;
+  z-index: 2;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid var(--cw-map-marker-border);
+  box-shadow: 0 1px 6px rgb(0 0 0 / 0.25);
+}
+
+.camp-marker__dot--online {
+  background: var(--cw-status-normal);
+}
+
+.camp-marker__dot--warning {
+  background: var(--cw-status-warning);
+}
+
+.camp-marker__dot--critical {
+  background: var(--cw-status-critical);
+  animation: cw-pulse-dot 2.5s ease-in-out infinite;
+}
+
+.camp-marker__dot--offline {
+  background: var(--cw-status-offline);
+}
+
+.camp-marker__stem {
+  width: 1px;
+  height: 8px;
+  margin-top: -1px;
+  background: var(--cw-map-marker-stem);
+}
+
+.camp-marker__label {
+  margin-top: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  min-width: max-content;
+  padding: 5px 10px 5px 8px;
+  border-radius: var(--radius-cw-sm);
+  border: 1px solid var(--cw-map-marker-label-border);
+  border-left-width: 3px;
+  background: var(--cw-map-marker-label-bg);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.12);
+}
+
+.camp-marker__label--online {
+  border-left-color: var(--cw-status-normal);
+}
+
+.camp-marker__label--warning {
+  border-left-color: var(--cw-status-warning);
+}
+
+.camp-marker__label--critical {
+  border-left-color: var(--cw-status-critical);
+}
+
+.camp-marker__label--offline {
+  border-left-color: var(--cw-status-offline);
+}
+
+.camp-marker__name {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--cw-text);
+  white-space: nowrap;
+}
+
+.camp-marker__status {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--cw-text-dim);
+}
+
+.camp-marker__label--online .camp-marker__status {
+  color: var(--cw-status-normal);
+}
+
+.camp-marker__label--warning .camp-marker__status {
+  color: var(--cw-status-warning);
+}
+
+.camp-marker__label--critical .camp-marker__status {
+  color: var(--cw-status-critical);
+}
+
+.camp-marker__label--offline .camp-marker__status {
+  color: var(--cw-status-offline);
+}
+
+/* Popup styling */
+.camp-popup-container .leaflet-popup-content-wrapper {
+  background: var(--cw-surface-raised);
+  color: var(--cw-text);
+  border: 1px solid var(--cw-border);
+  border-radius: var(--radius-cw-md);
+  box-shadow: var(--cw-map-popup-shadow);
+  padding: 0;
+}
+
+.camp-popup-container .leaflet-popup-content {
+  margin: 14px 16px;
+  line-height: 1.4;
+}
+
+.camp-popup-container .leaflet-popup-tip-container {
+  margin-top: -1px;
+}
+
+.camp-popup-container .leaflet-popup-tip {
+  background: var(--cw-surface-raised);
+  border: 1px solid var(--cw-border);
+  box-shadow: none;
+}
+
+.camp-popup-container .leaflet-popup-close-button {
+  color: var(--cw-text-muted) !important;
+  font-size: 18px !important;
+  padding: 6px 8px 0 0 !important;
+}
+
+.camp-popup-container .leaflet-popup-close-button:hover {
+  color: var(--cw-text) !important;
+}
