@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { telemetryService, initialAsyncState } from '@/services'
 import type { Alarm } from '@/types'
 import { useTelemetryRefresh } from './useTelemetryRefresh'
@@ -6,18 +6,24 @@ import { useTelemetryRefresh } from './useTelemetryRefresh'
 export function useAlarms(campId?: string) {
   const [state, setState] = useState(initialAsyncState<Alarm[]>([]))
   const [tick, setTick] = useState(0)
+  const hydratedForCamp = useRef<string | undefined>(undefined)
 
   const refetch = useCallback(() => setTick((value) => value + 1), [])
   useTelemetryRefresh(refetch)
 
   useEffect(() => {
     let cancelled = false
-    setState((previous) => ({ ...previous, loading: true }))
+    const needsLoading = hydratedForCamp.current !== campId
+    setState((previous) => ({
+      ...previous,
+      loading: needsLoading,
+    }))
 
     telemetryService
       .getActiveAlarms(campId)
       .then((data) => {
         if (!cancelled) {
+          hydratedForCamp.current = campId
           setState({ data, loading: false, error: null })
         }
       })

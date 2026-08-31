@@ -1,3 +1,4 @@
+import type { EnergyConsumption } from './energy'
 import type { CampMetrics } from './metric'
 
 export type CampStatus = 'online' | 'warning' | 'critical' | 'offline'
@@ -12,4 +13,6 @@ export interface Camp {
   status: CampStatus
   lastUpdated: string
   metrics: CampMetrics
+  /** Period energy totals (kWh) — distinct from instantaneous apparent power (kVA). */
+  energyConsumption: EnergyConsumption
 }

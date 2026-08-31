@@ -1,5 +1,5 @@
 import type { Alarm, Camp, CampTelemetrySeries, MetricKey } from '@/types'
-import { CAMP_PROFILES } from './constants'
+import { CAMP_PROFILES, DEFAULT_ENERGY_CONSUMPTION } from './constants'
 import { buildCampMetrics } from './helpers'
 import { deriveAlarmsFromCamps } from './alarmDerivation'
 import {
@@ -54,6 +54,8 @@ function buildRawCampsAtIndex(
       status: 'online' as const,
       lastUpdated,
       metrics: buildCampMetrics(values),
+      energyConsumption:
+        profile.energyConsumption ?? DEFAULT_ENERGY_CONSUMPTION,
     }
   })
 }

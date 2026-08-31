@@ -1,24 +1,16 @@
 import type { TelemetryPoint } from '@/types'
 import type { CampProfile } from './constants'
-import {
-  METRIC_RANGES,
-  SRI_LANKA_UTC_OFFSET_HOURS,
-  TELEMETRY_POINTS_PER_DAY,
-} from './constants'
+import { METRIC_RANGES, TELEMETRY_POINTS_PER_DAY } from './constants'
 import { clamp, createSeededRandom, hashSeed, round } from './seededRandom'
+import { getColomboHour } from '@/utils/dates'
 
 // ---------------------------------------------------------------------------
 // Shared simulation primitives
 // ---------------------------------------------------------------------------
 
-/** Local solar hour for Sri Lanka (UTC+5:30). */
+/** Local solar hour for Sri Lanka (Asia/Colombo). */
 function localHour(timestamp: string): number {
-  const date = new Date(timestamp)
-  const utc =
-    date.getUTCHours() +
-    date.getUTCMinutes() / 60 +
-    date.getUTCSeconds() / 3600
-  return (utc + SRI_LANKA_UTC_OFFSET_HOURS) % 24
+  return getColomboHour(timestamp)
 }
 
 function dayIndex(pointIndex: number): number {

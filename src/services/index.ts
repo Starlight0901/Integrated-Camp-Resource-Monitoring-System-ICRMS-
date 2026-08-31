@@ -17,5 +17,10 @@ export type {
   HistoricalTelemetry,
   AsyncState,
 } from './telemetryService.types'
-export { TELEMETRY_INTERVAL_MS } from './dummyTelemetryService'
+export {
+  TELEMETRY_INTERVAL_MS,
+  LIVE_SIMULATOR_INTERVAL_MS,
+  LIVE_TELEMETRY_SIMULATOR,
+  getTelemetryRefreshIntervalMs,
+} from './dummyTelemetryService'
 export { initialAsyncState, EMPTY_HISTORICAL_TELEMETRY } from './telemetryService.types'

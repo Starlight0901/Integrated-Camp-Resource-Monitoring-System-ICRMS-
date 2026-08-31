@@ -3,8 +3,14 @@ import {
   getLiveTelemetrySnapshot,
   telemetryTimestamps,
 } from '@/data/generateDataset'
-import { TELEMETRY_DAYS, TELEMETRY_INTERVAL_MS } from '@/data/constants'
 import {
+  LIVE_SIMULATOR_INTERVAL_MS,
+  LIVE_TELEMETRY_SIMULATOR,
+  TELEMETRY_DAYS,
+  TELEMETRY_INTERVAL_MS,
+} from '@/data/constants'
+import {
+  getTelemetryRefreshIntervalMs,
   msUntilNextTelemetryTick,
   resolveCurrentTelemetryIndex,
 } from '@/data/telemetryClock'
@@ -76,6 +82,7 @@ function resolveCurrentReading(
 
 /**
  * Deterministic demo implementation backed by the seeded telemetry generator.
+ * When LIVE_TELEMETRY_SIMULATOR is on, readings append once per minute.
  * Replace with `apiTelemetryService` when connecting to a real backend.
  */
 export class DummyTelemetryService implements TelemetryService {
@@ -105,6 +112,9 @@ export class DummyTelemetryService implements TelemetryService {
     metric: MetricKey,
     range: TelemetryRange = '7d',
   ): Promise<HistoricalTelemetry> {
+    // Ensure live points are appended before serving history
+    snapshot()
+
     const series = dummyTelemetry.find(
       (entry) => entry.campId === campId && entry.metric === metric,
     )
@@ -136,4 +146,9 @@ export class DummyTelemetryService implements TelemetryService {
 /** Singleton dummy implementation — swap export in `services/index.ts` for API later. */
 export const dummyTelemetryService = new DummyTelemetryService()
 
-export { TELEMETRY_INTERVAL_MS }
+export {
+  TELEMETRY_INTERVAL_MS,
+  LIVE_SIMULATOR_INTERVAL_MS,
+  LIVE_TELEMETRY_SIMULATOR,
+  getTelemetryRefreshIntervalMs,
+}

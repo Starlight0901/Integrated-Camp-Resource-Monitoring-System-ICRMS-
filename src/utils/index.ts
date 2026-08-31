@@ -20,11 +20,33 @@ export { formatMetricValue, formatMetricDisplay, isMetricKey } from './formatMet
 export {
   formatTelemetryValue,
   formatTelemetryByUnit,
+  formatEnergyKwh,
   formatTimestamp,
   formatTime,
+  formatChartAxisDate,
+  formatChartTooltipTimestamp,
   shortCampLabel,
   METRIC_SHORT_LABELS,
 } from './formatting'
+export {
+  APP_TIME_ZONE,
+  APP_TIME_ZONE_OFFSET_HOURS,
+  getCurrentDate,
+  getSevenDayRange,
+  getToday,
+  getYesterday,
+  getCurrentMonth,
+  getPreviousMonth,
+  formatChartDate,
+  formatShortDate,
+  formatMonthYear,
+  getEnergyConsumptionPeriods,
+  getCalendarDayTicks,
+  getColomboHour,
+  getColomboParts,
+  floorToMinute,
+  floorToInterval,
+} from './dates'
 export {
   formatLastUpdated,
   deriveSystemStatus,

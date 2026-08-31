@@ -1,11 +1,25 @@
 import {
-  DATA_END_TIME,
+  TELEMETRY_DAYS,
   TELEMETRY_INTERVAL_MS,
   TELEMETRY_POINT_COUNT,
 } from './constants'
+import {
+  floorToInterval,
+  getCurrentDate,
+  getSevenDayRange,
+} from '@/utils/dates'
 
-export function generateTimestamps(): string[] {
-  const endMs = new Date(DATA_END_TIME).getTime()
+/**
+ * Rolling 7-day axis at 5-minute resolution, ending at the current 5-minute slot.
+ * Never emits timestamps after `now`.
+ */
+export function generateTimestamps(now: Date = getCurrentDate()): string[] {
+  return getHistoricalTimestamps(now)
+}
+
+export function getHistoricalTimestamps(now: Date = getCurrentDate()): string[] {
+  const { end } = getSevenDayRange(now, TELEMETRY_DAYS)
+  const endMs = floorToInterval(end.getTime(), TELEMETRY_INTERVAL_MS)
   const startMs = endMs - (TELEMETRY_POINT_COUNT - 1) * TELEMETRY_INTERVAL_MS
   const timestamps: string[] = []
 

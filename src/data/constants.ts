@@ -1,12 +1,28 @@
-/** Fixed reference time — keeps all generated data stable across refreshes. */
-export const DATA_END_TIME = '2026-08-10T08:00:00.000Z'
-
-/** When true, current readings advance every TELEMETRY_INTERVAL_MS after DATA_END_TIME. */
-export const DEMO_LIVE_TELEMETRY = false
+import type { EnergyConsumption } from '@/types'
+import { APP_TIME_ZONE_OFFSET_HOURS } from '@/utils/dates'
 
 /** Sri Lanka standard time offset for diurnal simulation. */
-export const SRI_LANKA_UTC_OFFSET_HOURS = 5.5
+export const SRI_LANKA_UTC_OFFSET_HOURS = APP_TIME_ZONE_OFFSET_HOURS
 
+/**
+ * Legacy index-cycling mode (replays last day of fixed history).
+ * Prefer LIVE_TELEMETRY_SIMULATOR — appends new points from current readings.
+ */
+export const DEMO_LIVE_TELEMETRY = false
+
+/**
+ * Client-side live simulator: appends one new reading per camp/metric
+ * every LIVE_SIMULATOR_INTERVAL_MS without regenerating history.
+ */
+export const LIVE_TELEMETRY_SIMULATOR = true
+
+/**
+ * Demo interval: 1 minute.
+ * For local testing only, temporarily set to `1_000` — never ship that.
+ */
+export const LIVE_SIMULATOR_INTERVAL_MS = 60_000
+
+/** Historical series spacing (5-minute samples over TELEMETRY_DAYS). */
 export const TELEMETRY_INTERVAL_MS = 5 * 60 * 1000
 export const TELEMETRY_DAYS = 7
 export const TELEMETRY_POINTS_PER_DAY = 24 * 12
@@ -20,11 +36,32 @@ export const METRIC_RANGES = {
   fuelLevel: { min: 1, max: 20000 },
 } as const
 
+/** Max absolute change allowed per live simulator tick (1 minute). */
+export const LIVE_SIMULATOR_MAX_DELTA = {
+  apparentPower: 2.5,
+  temperature: 0.3,
+  waterLevel: 3.0,
+  fuelLevel: 130,
+} as const
+
 export const ALARM_THRESHOLDS = {
   fuel: { critical: 2000, warning: 5000 },
   water: { critical: 5, warning: 10 },
   apparentPower: { warning: 190 },
 } as const
+
+/**
+ * Deterministic demo energy totals (kWh).
+ * Distinct from apparent power (kVA); can later be derived from power telemetry.
+ * Period definitions (today / yesterday / this month / last month) are computed
+ * from the current Asia/Colombo calendar date — only these values are fixed.
+ */
+export const DEFAULT_ENERGY_CONSUMPTION: EnergyConsumption = {
+  today: 158,
+  yesterday: 283,
+  thisMonth: 2780,
+  lastMonth: 5364,
+}
 
 export interface CampProfile {
   id: string
@@ -48,6 +85,8 @@ export interface CampProfile {
   disableFuelRefuel?: boolean
   /** Demo: final fuel level for scripted critical decline (Galle). */
   fuelTargetEnd?: number
+  /** Optional camp-specific energy totals; defaults to DEFAULT_ENERGY_CONSUMPTION. */
+  energyConsumption?: EnergyConsumption
 }
 
 /** City-level coordinates — demo-tuned for 2 Normal / 1 Warning / 1 Critical. */

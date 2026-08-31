@@ -198,12 +198,12 @@ Tank metrics (water, fuel) also display **capacity percentage** relative to the 
 
 | Property | Value |
 | -------- | ----- |
-| Period | 7 days |
+| Period | Rolling 7 days relative to the current date |
 | Interval | 5 minutes |
 | Points per metric/camp | 2,016 (`7 × 24 × 12`) |
 | Data source | Deterministic seeded generator |
-| Reference end time | `2026-08-10T08:00:00.000Z` (fixed anchor) |
-| Live advancement | Disabled (`DEMO_LIVE_TELEMETRY = false`) |
+| End time | Current system/browser date (no hardcoded calendar date) |
+| Live advancement | 1-minute simulator ticks from the current clock |
 
 The historical dataset simulates realistic telemetry behavior:
 
@@ -510,7 +510,7 @@ Demonstration telemetry is generated deterministically using seeded pseudo-rando
 | Interval | 5 minutes |
 | History | 7 days (2,016 points per metric) |
 | Camp profiles | Unique seeds, base power, consumption rates, temp offsets |
-| Time anchor | Fixed `DATA_END_TIME` for reproducible demo snapshots |
+| Time anchor | Current system/browser date; rolling 7-day window (Asia/Colombo) |
 
 **Per-metric simulation:**
 

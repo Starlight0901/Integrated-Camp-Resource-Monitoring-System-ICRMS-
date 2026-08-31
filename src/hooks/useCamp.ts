@@ -17,7 +17,11 @@ export function useCamp(campId: string | undefined) {
     }
 
     let cancelled = false
-    setState((previous) => ({ ...previous, loading: true }))
+    // Only show loading on first fetch / camp change — not on live simulator ticks
+    setState((previous) => ({
+      ...previous,
+      loading: previous.data?.id !== campId,
+    }))
 
     telemetryService
       .getCamp(campId)

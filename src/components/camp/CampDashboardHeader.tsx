@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, Clock } from 'lucide-react'
 import type { Camp } from '@/types'
 import { StatusBadge } from '@/components/ui'
+import { isLiveTelemetrySimulatorActive } from '@/data'
 import { formatLastUpdated, CAMP_STATUS_LABELS } from '@/utils'
 
 export interface CampDashboardHeaderProps {
@@ -10,6 +11,7 @@ export interface CampDashboardHeaderProps {
 
 export function CampDashboardHeader({ camp }: CampDashboardHeaderProps) {
   const isHealthy = camp.status === 'online'
+  const liveSim = isLiveTelemetrySimulatorActive()
 
   return (
     <header className="space-y-4 border-b border-cw-border-subtle pb-6">
@@ -33,6 +35,19 @@ export function CampDashboardHeader({ camp }: CampDashboardHeaderProps) {
           label={CAMP_STATUS_LABELS[camp.status]}
           pulse={camp.status === 'critical'}
         />
+        {liveSim && (
+          <span
+            className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-cw-text-dim"
+            title="Telemetry updates once per minute"
+          >
+            <span
+              className="h-1.5 w-1.5 animate-pulse rounded-full"
+              style={{ backgroundColor: 'var(--cw-telemetry-green)' }}
+              aria-hidden
+            />
+            Live
+          </span>
+        )}
       </div>
 
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-cw-text-muted">

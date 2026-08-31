@@ -8,6 +8,7 @@ import {
 } from './telemetryGenerators'
 import { generateTimestamps } from './timestamps'
 import { resolveLiveCampsSnapshot } from './telemetrySnapshot'
+import { advanceLiveTelemetryIfDue } from './liveTelemetrySimulator'
 
 const METRIC_KEYS: MetricKey[] = [
   'apparentPower',
@@ -17,6 +18,21 @@ const METRIC_KEYS: MetricKey[] = [
 ]
 
 export const telemetryTimestamps = generateTimestamps()
+
+if (import.meta.env.DEV) {
+  const firstMs = new Date(telemetryTimestamps[0]!).getTime()
+  const lastMs = new Date(telemetryTimestamps[telemetryTimestamps.length - 1]!).getTime()
+  const nowMs = Date.now()
+  if (lastMs > nowMs + 60_000) {
+    console.warn('[ICRMS] Historical timestamps extend more than a minute into the future')
+  }
+  const spanDays = (lastMs - firstMs) / (24 * 60 * 60 * 1000)
+  if (spanDays < 6.9 || spanDays > 7.05) {
+    console.warn(
+      `[ICRMS] Historical span is ${spanDays.toFixed(2)} days; expected ~7`,
+    )
+  }
+}
 
 function generateSeriesForCamp(
   profile: (typeof CAMP_PROFILES)[number],
@@ -45,6 +61,7 @@ export const dummyCamps: Camp[] = liveSnapshot.camps
 export const dummyAlarms: Alarm[] = liveSnapshot.alarms
 
 export function getLiveTelemetrySnapshot() {
+  advanceLiveTelemetryIfDue(dummyTelemetry, telemetryTimestamps)
   return resolveLiveCampsSnapshot(dummyTelemetry, telemetryTimestamps)
 }
 

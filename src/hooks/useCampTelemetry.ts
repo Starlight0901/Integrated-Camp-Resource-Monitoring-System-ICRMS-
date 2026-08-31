@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   telemetryService,
   initialAsyncState,
@@ -18,6 +18,7 @@ export function useCampTelemetry(
     initialAsyncState<HistoricalTelemetry>(EMPTY_HISTORICAL_TELEMETRY),
   )
   const [tick, setTick] = useState(0)
+  const hydratedKey = useRef<string>('')
 
   const refetch = useCallback(() => setTick((value) => value + 1), [])
   useTelemetryRefresh(refetch)
@@ -25,16 +26,23 @@ export function useCampTelemetry(
   useEffect(() => {
     if (!campId) {
       setState({ data: EMPTY_HISTORICAL_TELEMETRY, loading: false, error: null })
+      hydratedKey.current = ''
       return
     }
 
     let cancelled = false
-    setState((previous) => ({ ...previous, loading: true }))
+    const requestKey = `${campId}:${metric}:${range}`
+    const needsLoading = hydratedKey.current !== requestKey
+    setState((previous) => ({
+      ...previous,
+      loading: needsLoading,
+    }))
 
     telemetryService
       .getHistoricalTelemetry(campId, metric, range)
       .then((data) => {
         if (!cancelled) {
+          hydratedKey.current = requestKey
           setState({ data, loading: false, error: null })
         }
       })

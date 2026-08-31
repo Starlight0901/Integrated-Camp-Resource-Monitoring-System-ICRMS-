@@ -2,13 +2,16 @@ export { dummyCamps, dummyTelemetry, dummyAlarms, getLiveTelemetrySnapshot, tele
 export { buildMetric, buildCampMetrics } from './helpers'
 export {
   CAMP_PROFILES,
-  DATA_END_TIME,
   DEMO_LIVE_TELEMETRY,
+  LIVE_TELEMETRY_SIMULATOR,
+  LIVE_SIMULATOR_INTERVAL_MS,
+  LIVE_SIMULATOR_MAX_DELTA,
   TELEMETRY_INTERVAL_MS,
   TELEMETRY_POINT_COUNT,
   TELEMETRY_DAYS,
   ALARM_THRESHOLDS,
   METRIC_RANGES,
+  DEFAULT_ENERGY_CONSUMPTION,
   SRI_LANKA_UTC_OFFSET_HOURS,
 } from './constants'
 export {
@@ -19,12 +22,21 @@ export {
   latestTelemetryValue,
   telemetryValueAt,
 } from './telemetryGenerators'
-export { generateTimestamps } from './timestamps'
+export { generateTimestamps, getHistoricalTimestamps } from './timestamps'
 export {
   resolveCurrentTelemetryIndex,
   resolveCurrentTelemetryTimestamp,
   msUntilNextTelemetryTick,
+  getTelemetryRefreshIntervalMs,
 } from './telemetryClock'
+export {
+  advanceLiveTelemetryIfDue,
+  appendLiveTelemetryTick,
+  isLiveTelemetrySimulatorActive,
+  msUntilNextLiveSimulatorTick,
+  pruneTelemetryWindow,
+  resetLiveSimulatorClock,
+} from './liveTelemetrySimulator'
 export {
   buildCampsAtTelemetryIndex,
   buildAlarmsAtTelemetryIndex,

@@ -1,4 +1,5 @@
 import type { TelemetryPoint } from '@/types'
+import { getCalendarDayTicks } from '@/utils/dates'
 import {
   formatChartAxisDate,
   formatChartTooltipTimestamp,
@@ -18,8 +19,6 @@ export interface ChartSeriesPoint {
   timestampMs: number
   value: number
 }
-
-const DAY_MS = 24 * 60 * 60 * 1000
 
 export function buildChartSeries(points: TelemetryPoint[]): ChartSeriesPoint[] {
   return points.map((point) => ({
@@ -70,26 +69,7 @@ export function buildDayAxisTicks(points: TelemetryPoint[]): number[] {
 
   const startMs = new Date(points[0]!.timestamp).getTime()
   const endMs = new Date(points[points.length - 1]!.timestamp).getTime()
-  const ticks: number[] = []
-
-  const startDate = new Date(startMs)
-  startDate.setHours(0, 0, 0, 0)
-  let cursor = startDate.getTime()
-
-  if (cursor < startMs) {
-    cursor += DAY_MS
-  }
-
-  while (cursor <= endMs) {
-    ticks.push(cursor)
-    cursor += DAY_MS
-  }
-
-  if (ticks.length === 0 || ticks[ticks.length - 1]! < endMs) {
-    ticks.push(endMs)
-  }
-
-  return ticks
+  return getCalendarDayTicks(startMs, endMs)
 }
 
 export const formatAxisTick = formatChartAxisDate

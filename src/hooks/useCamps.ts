@@ -12,7 +12,11 @@ export function useCamps() {
 
   useEffect(() => {
     let cancelled = false
-    setState((previous) => ({ ...previous, loading: true }))
+    // Keep existing camps visible during live simulator refreshes
+    setState((previous) => ({
+      ...previous,
+      loading: previous.data.length === 0,
+    }))
 
     telemetryService
       .getCamps()
