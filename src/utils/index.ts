@@ -13,6 +13,7 @@ export { METRIC_ICONS } from './metricIcons'
 export {
   METRIC_DISPLAY_CONFIG,
   METRIC_CARD_ORDER,
+  METRIC_ACCENT_CLASS,
   metricCapacityPercent,
   metricRangePercent,
 } from './metricConfig'

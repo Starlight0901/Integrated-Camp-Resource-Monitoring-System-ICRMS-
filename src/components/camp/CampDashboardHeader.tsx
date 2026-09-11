@@ -18,7 +18,7 @@ export function CampDashboardHeader({ camp }: CampDashboardHeaderProps) {
       <nav aria-label="Camp navigation">
         <Link
           to="/"
-          className="inline-flex items-center gap-1.5 text-sm text-cw-text-muted transition-colors hover:text-cw-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cw-accent/30"
+          className="inline-flex items-center gap-1.5 text-sm text-cw-text-muted transition-colors hover:text-cw-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cw-accent/30"
         >
           <ArrowLeft className="h-3.5 w-3.5" strokeWidth={1.75} />
           Overview
@@ -26,7 +26,7 @@ export function CampDashboardHeader({ camp }: CampDashboardHeaderProps) {
       </nav>
 
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-        <h1 className="text-2xl font-semibold tracking-tight text-cw-text lg:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-cw-text">
           {camp.name}
         </h1>
         <StatusBadge

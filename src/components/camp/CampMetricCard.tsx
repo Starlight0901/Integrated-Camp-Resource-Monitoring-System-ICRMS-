@@ -9,6 +9,7 @@ import {
 } from '@/utils'
 import {
   METRIC_DISPLAY_CONFIG,
+  METRIC_ACCENT_CLASS,
   metricCapacityPercent,
   metricRangePercent,
 } from '@/utils/metricConfig'
@@ -35,6 +36,7 @@ export function CampMetricCard({
   energyConsumption,
 }: CampMetricCardProps) {
   const config = METRIC_DISPLAY_CONFIG[metric.key]
+  const accent = METRIC_ACCENT_CLASS[metric.key]
   const Icon = config.icon
   const status = resolveMetricStatus(metric.key, metric.value)
   const rangePercent = metricRangePercent(metric.key, metric.value)
@@ -78,7 +80,12 @@ export function CampMetricCard({
         >
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-cw-md border border-cw-border-subtle bg-cw-bg-elevated text-cw-text-muted">
+              <div
+                className={cn(
+                  'flex h-10 w-10 shrink-0 items-center justify-center rounded-cw-md',
+                  accent.wrap,
+                )}
+              >
                 <Icon className="h-5 w-5" strokeWidth={1.75} />
               </div>
               <div>
@@ -120,7 +127,7 @@ export function CampMetricCard({
               <div
                 className={cn(
                   'h-full rounded-full transition-all duration-500',
-                  !needsAttention && 'bg-cw-text-dim/40',
+                  !needsAttention && accent.bar,
                   status === 'warning' && 'bg-cw-status-warning',
                   status === 'critical' && 'bg-cw-status-critical',
                 )}

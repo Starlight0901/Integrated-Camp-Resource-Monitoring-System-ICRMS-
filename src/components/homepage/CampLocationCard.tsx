@@ -29,10 +29,11 @@ export function CampLocationCard({ camp }: CampLocationCardProps) {
         padding="none"
         className="flex h-full flex-col overflow-hidden"
       >
+        <div className="h-0.5 bg-cw-brand/0 transition-colors duration-200 group-hover:bg-cw-brand" />
         <div className="flex flex-1 flex-col gap-4 p-4">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <h3 className="truncate text-sm font-semibold text-cw-text transition-colors group-hover:text-cw-accent-dim">
+              <h3 className="truncate text-sm font-semibold text-cw-text transition-colors group-hover:text-cw-brand">
                 {shortCampLabel(camp.name)}
               </h3>
               <p className="mt-0.5 truncate text-xs text-cw-text-muted">

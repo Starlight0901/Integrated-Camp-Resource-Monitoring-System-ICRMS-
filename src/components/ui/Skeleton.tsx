@@ -66,13 +66,19 @@ export function MapSkeleton({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-cw-lg border border-cw-border-subtle bg-cw-bg-elevated',
+        'flex flex-col overflow-hidden rounded-cw-lg border border-cw-border-subtle bg-cw-surface shadow-cw-elevated',
         className,
       )}
     >
-      <Skeleton className="absolute inset-0 rounded-none opacity-40" />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <Skeleton className="h-3 w-32" />
+      <div className="flex shrink-0 items-center gap-3 border-b border-cw-border-subtle px-4 py-3">
+        <Skeleton className="h-8 w-8 rounded-cw-md" />
+        <div className="space-y-1.5">
+          <Skeleton className="h-3.5 w-32" />
+          <Skeleton className="h-3 w-44" />
+        </div>
+      </div>
+      <div className="relative min-h-0 flex-1 bg-cw-bg-elevated">
+        <Skeleton className="absolute inset-0 rounded-none opacity-40" />
       </div>
     </div>
   )
@@ -81,9 +87,7 @@ export function MapSkeleton({ className }: { className?: string }) {
 export function OverviewPageSkeleton() {
   return (
     <div className="flex flex-col gap-8 lg:gap-10">
-      <section className="space-y-3">
-        <Skeleton className="h-3 w-28" />
-        <Skeleton className="h-4 w-56" />
+      <section className="space-y-0">
         <MapSkeleton className="h-[56vh] min-h-[380px] sm:min-h-[440px] lg:h-[68vh] lg:min-h-[540px]" />
       </section>
       <section className="space-y-5">

@@ -1,18 +1,16 @@
-import { MapContainer, TileLayer } from 'react-leaflet'
+import { MapContainer } from 'react-leaflet'
 import type { Alarm, Camp } from '@/types'
 import { getActiveAlarms } from '@/utils/alarms'
 import { cn } from '@/utils'
 import { useTheme } from '@/theme'
 import { CampMarker } from './CampMarker'
+import { MapBasemapLayer } from './MapBasemapLayer'
 import { MapCampBounds } from './MapCampBounds'
 import { MapLegend } from './MapLegend'
 import {
-  DARK_TILE_URL,
-  LIGHT_TILE_URL,
   SRI_LANKA_BOUNDS,
   SRI_LANKA_MAX_ZOOM,
   SRI_LANKA_MIN_ZOOM,
-  TILE_ATTRIBUTION,
 } from './mapConfig'
 import {
   SRI_LANKA_FALLBACK_CENTER,
@@ -29,7 +27,6 @@ export interface SriLankaMapProps {
 export function SriLankaMap({ camps, alarms, className }: SriLankaMapProps) {
   const { theme } = useTheme()
   const activeAlarmCount = getActiveAlarms(alarms).length
-  const tileUrl = theme === 'dark' ? DARK_TILE_URL : LIGHT_TILE_URL
 
   return (
     <div className={cn('relative h-full w-full', className)}>
@@ -43,7 +40,7 @@ export function SriLankaMap({ camps, alarms, className }: SriLankaMapProps) {
         scrollWheelZoom
         className="cw-map h-full w-full"
       >
-        <TileLayer key={theme} url={tileUrl} attribution={TILE_ATTRIBUTION} />
+        <MapBasemapLayer theme={theme} />
         <MapCampBounds camps={camps} />
         {camps.map((camp) => (
           <CampMarker key={camp.id} camp={camp} alarms={alarms} />

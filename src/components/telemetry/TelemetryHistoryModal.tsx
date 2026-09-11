@@ -13,7 +13,7 @@ import {
 import { X } from 'lucide-react'
 import type { Camp, Metric, TelemetryPoint } from '@/types'
 import { ChartSkeleton, ErrorState, NoDataState } from '@/components/ui'
-import { METRIC_DISPLAY_CONFIG } from '@/utils/metricConfig'
+import { METRIC_DISPLAY_CONFIG, METRIC_ACCENT_CLASS } from '@/utils/metricConfig'
 import { metricStatusForCamp } from '@/utils/metricStatus'
 import { cn } from '@/utils'
 import { getTelemetrySeriesColor, useChartTheme } from '@/theme'
@@ -69,7 +69,7 @@ function StatItem({
       className={cn(
         'rounded-cw-md border px-4 py-3',
         isCurrent
-          ? 'border-cw-border bg-cw-bg-elevated'
+          ? 'border-cw-brand/20 bg-cw-brand-subtle'
           : 'border-cw-border-subtle bg-cw-surface',
       )}
     >
@@ -163,7 +163,12 @@ export function TelemetryHistoryModal({
       >
         <div className="flex items-start justify-between gap-4 border-b border-cw-border-subtle px-6 py-5">
           <div className="flex items-start gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-cw-md border border-cw-border-subtle bg-cw-bg-elevated text-cw-text-muted">
+            <div
+              className={cn(
+                'flex h-11 w-11 shrink-0 items-center justify-center rounded-cw-md',
+                METRIC_ACCENT_CLASS[metric.key].wrap,
+              )}
+            >
               <MetricIcon className="h-5 w-5" strokeWidth={1.75} />
             </div>
             <div>
@@ -213,7 +218,7 @@ export function TelemetryHistoryModal({
             <NoDataState compact />
           ) : (
             <div
-              className="h-[420px] w-full min-w-0 rounded-cw-md border border-cw-border-subtle"
+              className="h-[420px] w-full min-w-0 rounded-cw-md border border-cw-border-subtle px-1 pt-2"
               style={{ backgroundColor: chartTheme.background }}
             >
               <ResponsiveContainer width="100%" height="100%">

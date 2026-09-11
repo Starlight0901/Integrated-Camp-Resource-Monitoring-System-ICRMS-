@@ -38,7 +38,7 @@ export function EnergyConsumptionSummary({
         {getEnergyConsumptionPeriods().map(({ key, label, detail }) => (
           <div
             key={key}
-            className="rounded-cw-md border border-cw-border-subtle bg-cw-bg-elevated/60 px-3 py-2.5"
+            className="rounded-cw-md border border-cw-border-subtle bg-cw-bg-elevated px-3 py-2.5"
           >
             <dt className="text-[10px] font-medium uppercase tracking-wider text-cw-text-dim">
               {label}

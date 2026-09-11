@@ -22,7 +22,11 @@ export function SectionHeader({
       )}
     >
       <div className="min-w-0">
-        <h3 className="text-xs font-semibold uppercase tracking-[0.12em] text-cw-text">
+        <h3 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-cw-text">
+          <span
+            className="h-3 w-0.5 shrink-0 rounded-full bg-cw-brand"
+            aria-hidden
+          />
           {title}
         </h3>
         {subtitle && (

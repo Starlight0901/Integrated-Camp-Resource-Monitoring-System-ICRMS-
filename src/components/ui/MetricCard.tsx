@@ -1,5 +1,5 @@
 import type { CampStatus, Metric } from '@/types'
-import { cn, formatMetricValue, getCampStatusStyle, METRIC_ICONS } from '@/utils'
+import { cn, formatMetricValue, getCampStatusStyle, METRIC_ICONS, METRIC_ACCENT_CLASS } from '@/utils'
 import { Card } from './Card'
 
 export interface MetricCardProps {
@@ -63,9 +63,8 @@ export function MetricCard({
 
         <div
           className={cn(
-            'flex h-9 w-9 shrink-0 items-center justify-center rounded-cw-md border border-cw-border-subtle bg-cw-bg-elevated transition-colors duration-200',
-            'group-hover:border-cw-border group-hover:bg-cw-surface-hover',
-            statusStyle && statusStyle.text,
+            'flex h-9 w-9 shrink-0 items-center justify-center rounded-cw-md transition-colors duration-200',
+            METRIC_ACCENT_CLASS[metric.key].wrap,
           )}
         >
           <Icon className="h-4 w-4" strokeWidth={1.75} />

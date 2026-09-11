@@ -18,7 +18,7 @@ export interface MetricDisplayConfig {
   min: number
   max: number
   showCapacity: boolean
-  /** Telemetry chart series — resolved to blue/green via theme tokens */
+  /** Telemetry chart series — resolved to blue/green/teal via theme tokens */
   chartSeries: TelemetryChartSeries
 }
 
@@ -72,6 +72,29 @@ export const METRIC_CARD_ORDER: MetricKey[] = [
   'waterLevel',
   'fuelLevel',
 ]
+
+/** KPI chrome only — status colors still override when warning/critical. */
+export const METRIC_ACCENT_CLASS: Record<
+  MetricKey,
+  { wrap: string; bar: string }
+> = {
+  apparentPower: {
+    wrap: 'border-transparent bg-cw-metric-power-bg text-cw-metric-power',
+    bar: 'bg-cw-metric-power',
+  },
+  temperature: {
+    wrap: 'border-transparent bg-cw-metric-temp-bg text-cw-metric-temp',
+    bar: 'bg-cw-metric-temp',
+  },
+  waterLevel: {
+    wrap: 'border-transparent bg-cw-metric-water-bg text-cw-metric-water',
+    bar: 'bg-cw-metric-water',
+  },
+  fuelLevel: {
+    wrap: 'border-transparent bg-cw-metric-fuel-bg text-cw-metric-fuel',
+    bar: 'bg-cw-metric-fuel',
+  },
+}
 
 export function metricCapacityPercent(key: MetricKey, value: number): number {
   const config = METRIC_DISPLAY_CONFIG[key]

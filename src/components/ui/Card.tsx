@@ -18,7 +18,7 @@ const variantClasses = {
   default: 'bg-cw-surface border-cw-border-subtle shadow-cw-card',
   raised: 'bg-cw-surface-raised border-cw-border shadow-cw-card',
   interactive:
-    'bg-cw-surface border-cw-border-subtle shadow-cw-card transition-colors duration-200 hover:border-cw-border hover:bg-cw-surface-hover cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cw-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cw-bg',
+    'bg-cw-surface border-cw-border-subtle shadow-cw-card cursor-pointer transition-[border-color,background-color,box-shadow] duration-200 hover:border-cw-border hover:bg-cw-surface-hover hover:shadow-cw-elevated focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cw-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cw-bg',
 } as const
 
 export function Card({

@@ -1,5 +1,6 @@
 import type { Alarm, Camp } from '@/types'
 import type { AsyncState } from '@/services'
+import { MapPin } from 'lucide-react'
 import { SriLankaMap } from '@/components/map'
 import { CampLocationCard } from '@/components/homepage'
 import {
@@ -48,18 +49,23 @@ export function OverviewView({ campsState, alarmsState }: OverviewViewProps) {
       ) : (
         <div className="flex flex-col gap-8 lg:gap-10">
           <section aria-label="Sri Lanka camp map" className="animate-cw-fade-in">
-            <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
-              <div>
-                <h2 className="text-xs font-semibold uppercase tracking-[0.1em] text-cw-text-muted">
-                  Operational Map
-                </h2>
-                <p className="mt-1 text-sm text-cw-text-dim">
-                  Geographic overview — {sortedCamps.length} monitored sites
-                </p>
+            <div className="overflow-hidden rounded-cw-lg border border-cw-border-subtle bg-cw-surface shadow-cw-elevated">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-cw-border-subtle px-4 py-3 sm:px-5">
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-cw-md border border-cw-border-subtle bg-cw-bg-elevated text-cw-text-muted">
+                    <MapPin className="h-4 w-4" strokeWidth={1.75} />
+                  </div>
+                  <div className="min-w-0">
+                    <h2 className="text-sm font-semibold tracking-tight text-cw-text">
+                      Operational Map
+                    </h2>
+                    <p className="mt-0.5 text-xs text-cw-text-muted">
+                      Sri Lanka — {sortedCamps.length} monitored sites
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div className="relative overflow-hidden rounded-cw-lg border border-cw-border-subtle bg-cw-surface shadow-cw-card">
               <SriLankaMap
                 camps={sortedCamps}
                 alarms={alarmsState.data}

@@ -321,20 +321,23 @@ No demo camp is currently configured as offline, but the offline code path is fu
 | --------- | ---------- |
 | Map library | [Leaflet](https://leafletjs.com/) v1.9 |
 | React integration | [React Leaflet](https://react-leaflet.js.org/) v5 |
-| Base tiles | CARTO Light / Dark (OpenStreetMap data) |
+| Base tiles | Theme-aware via `ACTIVE_MAP_TILE_PROVIDER` in `src/components/map/mapTiles.ts` |
+| Light tiles | OpenStreetMap (`https://tile.openstreetmap.org/{z}/{x}/{y}.png`) |
+| Dark tiles | Esri World Dark Gray Canvas (+ reference labels) |
 | Bounds | Sri Lanka bounding box (prevents panning far off-island) |
 | Zoom range | 7 – 12 |
 
 **Features:**
 
-- Theme-aware tile layers (light tiles in Light Mode, dark tiles in Dark Mode)
+- Theme-aware basemap layers (no API key; no CSS invert filters)
+- Provider-independent tile configuration — swap providers in `mapTiles.ts` only
 - Custom camp markers with status color, alarm indicator, and camp name label
 - Marker z-index prioritizes critical camps
 - Auto-fit bounds to visible camp markers (`MapCampBounds`)
 - Popup with status badge, alarm count, and dashboard navigation
 - Map legend overlay (site count, alarm count, status key)
 
-Camp coordinates are city-level demo positions defined in `CAMP_PROFILES` (`src/data/constants.ts`).
+Camp coordinates are city-level demo positions defined in `CAMP_PROFILES` (`src/data/constants.ts`). Tile providers are intentionally decoupled from camp data and markers.
 
 ---
 
@@ -685,7 +688,7 @@ ICRMS is currently a **client-side demonstration application** with no backend:
 - **No API endpoints** — all data is generated in-browser from seeded dummy data
 - **No encryption or secure communication** — there is no server-side data exchange
 - **No secrets or credentials** — no environment variables or API keys are used
-- **External map tiles** — the map loads tile images from CARTO CDN (OpenStreetMap data)
+- **External map tiles** — light mode uses OpenStreetMap; dark mode uses Esri World Dark Gray (configured in `mapTiles.ts`; no API key)
 
 Do not deploy this prototype to production without implementing appropriate access controls and a secure backend if real operational data is involved.
 
