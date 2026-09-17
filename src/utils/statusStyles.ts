@@ -2,7 +2,7 @@ import type { AlarmSeverity, CampStatus } from '@/types'
 import { cn } from './cn'
 
 export const CAMP_STATUS_LABELS: Record<CampStatus, string> = {
-  online: 'ONLINE',
+  online: 'NORMAL',
   warning: 'WARNING',
   critical: 'CRITICAL',
   offline: 'OFFLINE',
@@ -104,7 +104,7 @@ export function statusDotClasses(
 }
 
 export const SYSTEM_STATUS_LABEL: Record<CampStatus, string> = {
-  online: 'System Online',
+  online: 'System Normal',
   warning: 'System Degraded',
   critical: 'Critical Alerts Active',
   offline: 'System Offline',

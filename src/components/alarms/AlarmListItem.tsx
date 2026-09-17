@@ -1,5 +1,6 @@
 import type { Alarm } from '@/types'
 import { cn, getAlarmSeverityStyle, formatTelemetryByUnit, formatTime } from '@/utils'
+import { evaluateResource } from '@/monitoring'
 
 export interface AlarmListItemProps {
   alarm: Alarm
@@ -8,6 +9,7 @@ export interface AlarmListItemProps {
 
 export function AlarmListItem({ alarm, onSelect }: AlarmListItemProps) {
   const style = getAlarmSeverityStyle(alarm.severity)
+  const evaluation = evaluateResource(alarm.metric, alarm.currentValue, alarm.unit)
 
   return (
     <button
@@ -41,11 +43,19 @@ export function AlarmListItem({ alarm, onSelect }: AlarmListItemProps) {
       <p className="cw-telemetry-value mt-2 text-base font-semibold text-cw-text">
         {formatTelemetryByUnit(alarm.currentValue, alarm.unit)}
       </p>
+      {evaluation.threshold != null && (
+        <p className="mt-0.5 text-xs text-cw-text-dim">
+          Threshold: {formatTelemetryByUnit(evaluation.threshold, evaluation.unit)}
+        </p>
+      )}
 
-      <p className="mt-1 text-xs text-cw-text-muted">{alarm.thresholdDescription}</p>
+      <p className="mt-1 text-xs text-cw-text-muted">{evaluation.message}</p>
+      {evaluation.recommendation && (
+        <p className="mt-1 text-xs text-cw-text-dim">{evaluation.recommendation}</p>
+      )}
 
       <p className="mt-2 text-[10px] font-medium uppercase tracking-wider text-cw-text-dim">
-        {alarm.status === 'active' ? 'Active' : 'Acknowledged'}
+        View Camp
       </p>
     </button>
   )

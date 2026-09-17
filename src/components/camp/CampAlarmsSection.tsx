@@ -3,6 +3,7 @@ import { AlertTriangle } from 'lucide-react'
 import { Card, SectionHeader } from '@/components/ui'
 import { getActiveAlarms } from '@/utils/alarms'
 import { cn, getAlarmSeverityStyle, formatTelemetryByUnit, formatTime } from '@/utils'
+import { evaluateResource } from '@/monitoring'
 
 export interface CampAlarmsSectionProps {
   campId: string
@@ -32,33 +33,48 @@ export function CampAlarmsSection({
         <ul className="divide-y divide-cw-border-subtle">
           {campAlarms.map((alarm) => {
             const style = getAlarmSeverityStyle(alarm.severity)
+            const evaluation = evaluateResource(
+              alarm.metric,
+              alarm.currentValue,
+              alarm.unit,
+            )
             return (
               <li key={alarm.id}>
                 <button
                   type="button"
                   onClick={() => onAlarmClick(alarm.metric)}
                   className={cn(
-                    'flex w-full items-center gap-4 px-4 py-3.5 text-left transition-colors',
+                    'flex w-full items-start gap-4 px-4 py-3.5 text-left transition-colors',
                     'hover:bg-cw-surface-hover focus-visible:bg-cw-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cw-accent/40',
                     alarm.severity === 'critical' && 'border-l-2 border-l-cw-status-critical',
                     alarm.severity === 'warning' && 'border-l-2 border-l-cw-status-warning',
                   )}
                 >
                   <AlertTriangle
-                    className={cn('h-4 w-4 shrink-0', style.text)}
+                    className={cn('mt-0.5 h-4 w-4 shrink-0', style.text)}
                     strokeWidth={1.75}
                     aria-hidden
                   />
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-cw-text">{alarm.metricLabel}</p>
                     <p className="mt-0.5 text-xs text-cw-text-muted">
-                      {alarm.thresholdDescription}
+                      {evaluation.message}
                     </p>
+                    {evaluation.recommendation && (
+                      <p className="mt-1 text-xs text-cw-text-dim">
+                        {evaluation.recommendation}
+                      </p>
+                    )}
                   </div>
                   <div className="shrink-0 text-right">
                     <p className="cw-telemetry-value text-sm font-semibold text-cw-text">
                       {formatTelemetryByUnit(alarm.currentValue, alarm.unit)}
                     </p>
+                    {evaluation.threshold != null && (
+                      <p className="mt-0.5 text-[10px] text-cw-text-dim">
+                        Threshold {formatTelemetryByUnit(evaluation.threshold, evaluation.unit)}
+                      </p>
+                    )}
                     <time
                       dateTime={alarm.timestamp}
                       className="mt-0.5 block text-[10px] uppercase tracking-wider text-cw-text-dim"

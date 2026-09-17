@@ -87,6 +87,13 @@ export function MapSkeleton({ className }: { className?: string }) {
 export function OverviewPageSkeleton() {
   return (
     <div className="flex flex-col gap-8 lg:gap-10">
+      <section>
+        <div className="rounded-cw-lg border border-cw-border-subtle bg-cw-surface p-4 shadow-cw-card sm:p-5">
+          <Skeleton className="h-3 w-28" />
+          <Skeleton className="mt-3 h-6 w-48" />
+          <Skeleton className="mt-2 h-4 w-64" />
+        </div>
+      </section>
       <section className="space-y-0">
         <MapSkeleton className="h-[56vh] min-h-[380px] sm:min-h-[440px] lg:h-[68vh] lg:min-h-[540px]" />
       </section>

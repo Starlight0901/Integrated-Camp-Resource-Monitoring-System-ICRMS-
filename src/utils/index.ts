@@ -23,6 +23,7 @@ export {
   formatTelemetryByUnit,
   formatEnergyKwh,
   formatTimestamp,
+  formatDataFreshness,
   formatTime,
   formatChartAxisDate,
   formatChartTooltipTimestamp,

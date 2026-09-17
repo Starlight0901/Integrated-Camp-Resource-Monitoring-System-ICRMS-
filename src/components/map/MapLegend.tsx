@@ -20,7 +20,7 @@ export function MapLegend({ campCount, activeAlarmCount }: MapLegendProps) {
         <ul className="mt-2.5 hidden items-center gap-3 border-t border-cw-border-subtle pt-2.5 sm:flex">
           <li className="flex items-center gap-1.5 text-[10px] text-cw-text-dim">
             <span className="h-1.5 w-1.5 rounded-full bg-cw-status-normal" />
-            Online
+            Normal
           </li>
           <li className="flex items-center gap-1.5 text-[10px] text-cw-text-dim">
             <span className="h-1.5 w-1.5 rounded-full bg-cw-status-warning" />

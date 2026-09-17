@@ -1,11 +1,12 @@
-import type { CampStatus, EnergyConsumption, Metric, MetricKey } from '@/types'
+import type { EnergyConsumption, Metric } from '@/types'
 import { LineChart } from 'lucide-react'
 import { Card, StatusBadge } from '@/components/ui'
 import {
+  CAMP_STATUS_LABELS,
   cn,
   formatMetricValue,
   formatMetricDisplay,
-  CAMP_STATUS_LABELS,
+  formatTelemetryByUnit,
 } from '@/utils'
 import {
   METRIC_DISPLAY_CONFIG,
@@ -13,32 +14,31 @@ import {
   metricCapacityPercent,
   metricRangePercent,
 } from '@/utils/metricConfig'
-import { metricStatusForCamp } from '@/utils/metricStatus'
+import type { ResourceEvaluation } from '@/monitoring'
 import { EnergyConsumptionSummary } from './EnergyConsumptionSummary'
 
 export interface CampMetricCardProps {
   metric: Metric
+  evaluation: ResourceEvaluation
   onClick: () => void
   highlighted?: boolean
+  trendObservation?: string | null
   /** When set on Apparent Power, shows period energy totals (kWh) below the load reading. */
   energyConsumption?: EnergyConsumption
 }
 
-function resolveMetricStatus(key: MetricKey, value: number): CampStatus {
-  const status = metricStatusForCamp(key, value)
-  return status === 'online' ? 'online' : status
-}
-
 export function CampMetricCard({
   metric,
+  evaluation,
   onClick,
   highlighted = false,
+  trendObservation = null,
   energyConsumption,
 }: CampMetricCardProps) {
   const config = METRIC_DISPLAY_CONFIG[metric.key]
   const accent = METRIC_ACCENT_CLASS[metric.key]
   const Icon = config.icon
-  const status = resolveMetricStatus(metric.key, metric.value)
+  const status = evaluation.status
   const rangePercent = metricRangePercent(metric.key, metric.value)
   const capacityPercent = metricCapacityPercent(metric.key, metric.value)
   const needsAttention = status === 'warning' || status === 'critical'
@@ -52,7 +52,7 @@ export function CampMetricCard({
       onClick={onClick}
       role="button"
       tabIndex={0}
-      aria-label={`${config.label}: ${formatMetricDisplay(metric)}. View 7-day trend.`}
+      aria-label={`${config.label}: ${formatMetricDisplay(metric)}. ${evaluation.message} View 7-day trend.`}
       onKeyDown={(event) => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault()
@@ -119,6 +119,19 @@ export function CampMetricCard({
               <p className="mt-2 text-sm text-cw-text-dim">
                 Current electrical load
               </p>
+            )}
+            <p className="mt-2 text-sm text-cw-text-muted">{evaluation.message}</p>
+            {needsAttention && evaluation.threshold != null && (
+              <p className="mt-1 text-xs text-cw-text-dim">
+                {status === 'critical' ? 'Critical' : 'Warning'} threshold:{' '}
+                {formatTelemetryByUnit(evaluation.threshold, evaluation.unit)}
+              </p>
+            )}
+            {evaluation.recommendation && (
+              <p className="mt-2 text-xs text-cw-text">{evaluation.recommendation}</p>
+            )}
+            {trendObservation && (
+              <p className="mt-2 text-xs text-cw-text-dim">{trendObservation}</p>
             )}
           </div>
 

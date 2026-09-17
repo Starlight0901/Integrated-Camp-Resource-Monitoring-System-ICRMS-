@@ -1,8 +1,14 @@
+import { useMemo } from 'react'
 import type { Alarm, Camp } from '@/types'
 import type { AsyncState } from '@/services'
 import { MapPin } from 'lucide-react'
 import { SriLankaMap } from '@/components/map'
-import { CampLocationCard } from '@/components/homepage'
+import {
+  AttentionRequired,
+  CampLocationCard,
+  RecentActivity,
+  SystemOverview,
+} from '@/components/homepage'
 import {
   ActionButton,
   ErrorState,
@@ -11,6 +17,7 @@ import {
   SectionHeader,
 } from '@/components/ui'
 import { sortCampsByDisplayOrder } from '@/utils/homepage'
+import { buildRecentActivity, evaluateFleet } from '@/monitoring'
 
 export interface OverviewViewProps {
   campsState: AsyncState<Camp[]>
@@ -19,7 +26,13 @@ export interface OverviewViewProps {
 
 export function OverviewView({ campsState, alarmsState }: OverviewViewProps) {
   const { data: camps, loading, error } = campsState
+  const alarms = alarmsState.data
   const sortedCamps = sortCampsByDisplayOrder(camps)
+  const fleet = useMemo(
+    () => evaluateFleet(sortCampsByDisplayOrder(camps), alarms ?? []),
+    [camps, alarms],
+  )
+  const activity = useMemo(() => buildRecentActivity(alarms ?? []), [alarms])
 
   if (loading) {
     return <OverviewPageSkeleton />
@@ -48,6 +61,10 @@ export function OverviewView({ campsState, alarmsState }: OverviewViewProps) {
         />
       ) : (
         <div className="flex flex-col gap-8 lg:gap-10">
+          <SystemOverview fleet={fleet} />
+
+          <AttentionRequired items={fleet.attentionItems} />
+
           <section aria-label="Sri Lanka camp map" className="animate-cw-fade-in">
             <div className="overflow-hidden rounded-cw-lg border border-cw-border-subtle bg-cw-surface shadow-cw-elevated">
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-cw-border-subtle px-4 py-3 sm:px-5">
@@ -68,7 +85,7 @@ export function OverviewView({ campsState, alarmsState }: OverviewViewProps) {
 
               <SriLankaMap
                 camps={sortedCamps}
-                alarms={alarmsState.data}
+                alarms={alarms ?? []}
                 className="h-[56vh] min-h-[380px] sm:min-h-[440px] lg:h-[68vh] lg:min-h-[540px] xl:min-h-[580px]"
               />
             </div>
@@ -76,8 +93,8 @@ export function OverviewView({ campsState, alarmsState }: OverviewViewProps) {
 
           <section aria-label="Camp locations" className="animate-cw-fade-in">
             <SectionHeader
-              title="Camp Locations"
-              subtitle="Select a site for detailed telemetry and alarm history"
+              title="Camp Status"
+              subtitle="Current operational condition of each monitored site"
               className="mb-5"
             />
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -86,6 +103,8 @@ export function OverviewView({ campsState, alarmsState }: OverviewViewProps) {
               ))}
             </div>
           </section>
+
+          <RecentActivity events={activity} />
         </div>
       )}
     </>

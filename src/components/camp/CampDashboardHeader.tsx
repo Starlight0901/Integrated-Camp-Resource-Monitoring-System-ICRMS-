@@ -3,14 +3,15 @@ import { ArrowLeft, Clock } from 'lucide-react'
 import type { Camp } from '@/types'
 import { StatusBadge } from '@/components/ui'
 import { isLiveTelemetrySimulatorActive } from '@/data'
-import { formatLastUpdated, CAMP_STATUS_LABELS } from '@/utils'
+import { CAMP_STATUS_LABELS, formatDataFreshness } from '@/utils'
+import { evaluateCamp } from '@/monitoring'
 
 export interface CampDashboardHeaderProps {
   camp: Camp
 }
 
 export function CampDashboardHeader({ camp }: CampDashboardHeaderProps) {
-  const isHealthy = camp.status === 'online'
+  const evaluation = evaluateCamp(camp)
   const liveSim = isLiveTelemetrySimulatorActive()
 
   return (
@@ -50,26 +51,19 @@ export function CampDashboardHeader({ camp }: CampDashboardHeaderProps) {
         )}
       </div>
 
+      <p className="text-sm text-cw-text">{evaluation.summary}</p>
+
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-cw-text-muted">
         <span className="inline-flex items-center gap-1.5">
           <Clock className="h-3.5 w-3.5 shrink-0" strokeWidth={1.75} />
-          Last updated{' '}
           <time dateTime={camp.lastUpdated} className="font-medium text-cw-text">
-            {formatLastUpdated(camp.lastUpdated)}
+            {formatDataFreshness(camp.lastUpdated)}
           </time>
         </span>
         <span className="hidden text-cw-border sm:inline" aria-hidden>
           ·
         </span>
         <span>{camp.location}</span>
-        {isHealthy && (
-          <>
-            <span className="hidden text-cw-border sm:inline" aria-hidden>
-              ·
-            </span>
-            <span className="text-cw-status-normal">All metrics within normal range</span>
-          </>
-        )}
       </div>
     </header>
   )

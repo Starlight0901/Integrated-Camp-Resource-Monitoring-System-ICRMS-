@@ -52,6 +52,23 @@ export function formatTimestamp(iso: string): string {
   })
 }
 
+/** Relative freshness from an actual telemetry timestamp. */
+export function formatDataFreshness(iso: string, nowMs: number = Date.now()): string {
+  const then = new Date(iso).getTime()
+  if (Number.isNaN(then)) return ''
+  const delta = Math.max(0, nowMs - then)
+  if (delta < 45_000) return 'Updated just now'
+  const minutes = Math.round(delta / 60_000)
+  if (minutes < 60) {
+    return minutes === 1 ? 'Updated 1 min ago' : `Updated ${minutes} min ago`
+  }
+  const hours = Math.round(minutes / 60)
+  if (hours < 24) {
+    return hours === 1 ? 'Updated 1 hour ago' : `Updated ${hours} hours ago`
+  }
+  return `Updated ${formatTimestamp(iso)}`
+}
+
 export function formatTime(iso: string): string {
   return new Date(iso).toLocaleTimeString(LOCALE, {
     ...TIME_OPTIONS,

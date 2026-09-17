@@ -1,5 +1,7 @@
 export { useCamps } from './useCamps'
 export { useCamp } from './useCamp'
 export { useCampTelemetry } from './useCampTelemetry'
+export { useCampTrendObservations } from './useCampTrendObservations'
+export type { CampTrendMap } from './useCampTrendObservations'
 export { useAlarms } from './useAlarms'
 export { useTelemetryRefresh } from './useTelemetryRefresh'

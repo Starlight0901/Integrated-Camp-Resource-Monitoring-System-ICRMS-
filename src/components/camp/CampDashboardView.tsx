@@ -13,6 +13,7 @@ import { CampDashboardHeader } from './CampDashboardHeader'
 import { CampOverviewPanel } from './CampOverviewPanel'
 import { CampMetricsPanel } from './CampMetricsPanel'
 import { CampAlarmsSection } from './CampAlarmsSection'
+import { useCampTrendObservations } from '@/hooks'
 
 export interface CampDashboardViewProps {
   campState: AsyncState<Camp | null>
@@ -33,6 +34,7 @@ export function CampDashboardView({
 }: CampDashboardViewProps) {
   const { data: camp, loading, error } = campState
   const isOffline = camp?.status === 'offline'
+  const trends = useCampTrendObservations(isOffline ? null : camp)
 
   if (loading) {
     return <CampDashboardSkeleton />
@@ -81,6 +83,7 @@ export function CampDashboardView({
             camp={camp}
             onMetricClick={onMetricSelect}
             highlightedMetric={highlightedMetric}
+            trends={trends}
           />
 
           <CampAlarmsSection
