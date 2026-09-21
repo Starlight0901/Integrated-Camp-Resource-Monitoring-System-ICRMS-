@@ -2,7 +2,7 @@
 @import 'leaflet/dist/leaflet.css';
 
 /*
- * ICRMS design tokens
+ * SLNAFMS design tokens
  * Light: navy/blue enterprise · Dark: charcoal-first with muted blue accents
  * Status: Green (normal) · Amber (warning) · Red (critical only)
  * Components consume cw-* Tailwind utilities; values swap via data-theme on <html>.

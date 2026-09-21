@@ -1,11 +1,11 @@
-import type { Alarm } from '@/types'
+import type { Alarm, AlarmSeverity, AlarmStatus } from '@/types'
 
-export function getActiveAlarms(alarms: Alarm[]): Alarm[] {
+export function getActiveAlarms<T extends { status: AlarmStatus }>(alarms: T[]): T[] {
   return alarms.filter((alarm) => alarm.status === 'active')
 }
 
 export function getTopAlarmSeverity(
-  alarms: Alarm[],
+  alarms: Array<{ status: AlarmStatus; severity: AlarmSeverity }>,
 ): 'warning' | 'critical' | null {
   const active = getActiveAlarms(alarms)
   if (active.some((alarm) => alarm.severity === 'critical')) return 'critical'

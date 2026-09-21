@@ -1,14 +1,14 @@
-# ICRMS
+# SLNAFMS
 
-## Integrated Camp Resource Monitoring System
+## SL Navy Automated Facility Management Solution (SLNAFMS)
 
-ICRMS is a centralized monitoring dashboard that provides visibility into resource and utility conditions across geographically distributed camp sites in Sri Lanka. The current implementation is a **demonstration prototype** that uses **deterministic dummy telemetry data** while maintaining a service-layer architecture that can later be connected to real telemetry sources.
+SLNAFMS is a centralized monitoring dashboard that provides visibility into resource and utility conditions across geographically distributed camp sites in Sri Lanka. The current implementation is a **demonstration prototype** that uses **deterministic dummy telemetry data** while maintaining a service-layer architecture that can later be connected to real telemetry sources.
 
 ---
 
 ## Overview
 
-ICRMS addresses the need for a single operational view across multiple remote camp locations. Operators can assess fleet-wide status at a glance, drill into individual sites, review live readings, inspect historical trends, and respond to active alarms — all from one web interface.
+SLNAFMS addresses the need for a single operational view across multiple remote camp locations. Operators can assess fleet-wide status at a glance, drill into individual sites, review live readings, inspect historical trends, and respond to active alarms — all from one web interface.
 
 The dashboard monitors four resource metrics per camp:
 
@@ -109,7 +109,7 @@ Camp site images are stored in `public/images/camps/` (`colombo.svg`, `trincomal
 Homepage (/)
    │
    ├── Global Header
-   │      ├── ICRMS branding
+   │      ├── SLNAFMS branding
    │      ├── Theme toggle (Light / Dark)
    │      └── Alarm bell panel
    │
@@ -144,7 +144,7 @@ Homepage (/)
 
 The homepage (`OverviewPage` → `OverviewView`) contains:
 
-- **ICRMS header** — sticky global header with branding, theme switcher, and alarm notification bell
+- **SLNAFMS header** — sticky global header with branding, theme switcher, and alarm notification bell
 - **Operational Map** — full-width Sri Lanka map with camp markers
 - **Camp markers** — color-coded by operational status; popups show status and an "Open dashboard" action
 - **Camp status** — reflected on markers, cards, and the map legend
@@ -682,7 +682,7 @@ The following are **not currently implemented** but represent logical next steps
 
 ## Security Considerations
 
-ICRMS is currently a **client-side demonstration application** with no backend:
+SLNAFMS is currently a **client-side demonstration application** with no backend:
 
 - **No authentication or authorization** — the dashboard is open to anyone with access to the URL
 - **No API endpoints** — all data is generated in-browser from seeded dummy data
@@ -732,7 +732,7 @@ The following is currently functional:
 
 ```text
 Homepage
-├── Global header (ICRMS, theme toggle, alarm bell)
+├── Global header (SLNAFMS, theme toggle, alarm bell)
 ├── Sri Lankan map with status markers
 ├── Camp location cards (4 sites)
 └── Active alarms (via alarm bell dropdown)
@@ -757,7 +757,7 @@ No screenshots are included in this repository.
 
 ## Contribution / Development Notes
 
-When extending ICRMS, use these general guidelines:
+When extending SLNAFMS, use these general guidelines:
 
 | Change Type | Location |
 | ----------- | -------- |

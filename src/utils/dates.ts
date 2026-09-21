@@ -1,5 +1,5 @@
 /**
- * Central date/time helpers for ICRMS.
+ * Central date/time helpers for SLNAFMS.
  *
  * Calendar boundaries and labels use Sri Lanka Standard Time (Asia/Colombo).
  * Sri Lanka does not observe DST; UTC+5:30 is a stable offset.

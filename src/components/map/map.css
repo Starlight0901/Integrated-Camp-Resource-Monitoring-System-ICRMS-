@@ -275,3 +275,107 @@
 .camp-popup-container .leaflet-popup-close-button:hover {
   color: var(--cw-text) !important;
 }
+
+/* DORA markers — distinct diamond pin; status colors share camp semantic tokens */
+.dora-marker-wrapper {
+  background: transparent !important;
+  border: none !important;
+}
+
+.dora-marker {
+  width: 108px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.dora-marker:hover .dora-marker__pin {
+  transform: scale(1.05);
+  transform-origin: center top;
+}
+
+.dora-marker__pin {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.dora-marker__diamond {
+  width: 11px;
+  height: 11px;
+  transform: rotate(45deg);
+  border: 2px solid var(--cw-map-marker-border);
+  box-shadow: 0 1px 6px rgb(0 0 0 / 0.25);
+}
+
+.dora-marker__diamond--normal {
+  background: var(--cw-status-normal);
+}
+
+.dora-marker__diamond--warning {
+  background: var(--cw-status-warning);
+}
+
+.dora-marker__diamond--critical {
+  background: var(--cw-status-critical);
+  animation: cw-pulse-dot 2.5s ease-in-out infinite;
+}
+
+.dora-marker__label {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  min-width: max-content;
+  padding: 4px 8px 4px 7px;
+  border-radius: var(--radius-cw-sm);
+  border: 1px solid var(--cw-map-marker-label-border);
+  border-left-width: 3px;
+  background: var(--cw-map-marker-label-bg);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.12);
+}
+
+.dora-marker__label--normal {
+  border-left-color: var(--cw-status-normal);
+}
+
+.dora-marker__label--warning {
+  border-left-color: var(--cw-status-warning);
+}
+
+.dora-marker__label--critical {
+  border-left-color: var(--cw-status-critical);
+}
+
+.dora-marker__name {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--cw-text);
+  white-space: nowrap;
+}
+
+.dora-marker__status {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.dora-marker__label--normal .dora-marker__status {
+  color: var(--cw-status-normal);
+}
+
+.dora-marker__label--warning .dora-marker__status {
+  color: var(--cw-status-warning);
+}
+
+.dora-marker__label--critical .dora-marker__status {
+  color: var(--cw-status-critical);
+}

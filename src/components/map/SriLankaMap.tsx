@@ -1,9 +1,10 @@
 import { MapContainer } from 'react-leaflet'
-import type { Alarm, Camp } from '@/types'
+import type { Alarm, Camp, Dora } from '@/types'
 import { getActiveAlarms } from '@/utils/alarms'
 import { cn } from '@/utils'
 import { useTheme } from '@/theme'
 import { CampMarker } from './CampMarker'
+import { DoraMarker } from './DoraMarker'
 import { MapBasemapLayer } from './MapBasemapLayer'
 import { MapCampBounds } from './MapCampBounds'
 import { MapLegend } from './MapLegend'
@@ -21,10 +22,16 @@ import '@/components/map/map.css'
 export interface SriLankaMapProps {
   camps: Camp[]
   alarms: Alarm[]
+  doras?: Dora[]
   className?: string
 }
 
-export function SriLankaMap({ camps, alarms, className }: SriLankaMapProps) {
+export function SriLankaMap({
+  camps,
+  alarms,
+  doras = [],
+  className,
+}: SriLankaMapProps) {
   const { theme } = useTheme()
   const activeAlarmCount = getActiveAlarms(alarms).length
 
@@ -45,9 +52,16 @@ export function SriLankaMap({ camps, alarms, className }: SriLankaMapProps) {
         {camps.map((camp) => (
           <CampMarker key={camp.id} camp={camp} alarms={alarms} />
         ))}
+        {doras.map((dora) => (
+          <DoraMarker key={`${dora.id}-${dora.status}`} dora={dora} />
+        ))}
       </MapContainer>
 
-      <MapLegend campCount={camps.length} activeAlarmCount={activeAlarmCount} />
+      <MapLegend
+        campCount={camps.length}
+        doraCount={doras.length}
+        activeAlarmCount={activeAlarmCount}
+      />
     </div>
   )
 }

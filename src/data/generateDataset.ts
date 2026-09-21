@@ -24,12 +24,12 @@ if (import.meta.env.DEV) {
   const lastMs = new Date(telemetryTimestamps[telemetryTimestamps.length - 1]!).getTime()
   const nowMs = Date.now()
   if (lastMs > nowMs + 60_000) {
-    console.warn('[ICRMS] Historical timestamps extend more than a minute into the future')
+    console.warn('[SLNAFMS] Historical timestamps extend more than a minute into the future')
   }
   const spanDays = (lastMs - firstMs) / (24 * 60 * 60 * 1000)
   if (spanDays < 6.9 || spanDays > 7.05) {
     console.warn(
-      `[ICRMS] Historical span is ${spanDays.toFixed(2)} days; expected ~7`,
+      `[SLNAFMS] Historical span is ${spanDays.toFixed(2)} days; expected ~7`,
     )
   }
 }
@@ -69,7 +69,7 @@ if (import.meta.env.DEV) {
   for (const series of dummyTelemetry) {
     if (series.points.length !== TELEMETRY_POINT_COUNT) {
       console.warn(
-        `[ICRMS] Expected ${TELEMETRY_POINT_COUNT} points for ${series.campId}/${series.metric}, got ${series.points.length}`,
+        `[SLNAFMS] Expected ${TELEMETRY_POINT_COUNT} points for ${series.campId}/${series.metric}, got ${series.points.length}`,
       )
     }
   }
@@ -85,7 +85,7 @@ if (import.meta.env.DEV) {
   for (const [status, count] of Object.entries(expected)) {
     if (statusCounts[status] !== count) {
       console.warn(
-        `[ICRMS] Demo status mismatch: expected ${count} "${status}", got ${statusCounts[status] ?? 0}`,
+        `[SLNAFMS] Demo status mismatch: expected ${count} "${status}", got ${statusCounts[status] ?? 0}`,
         dummyCamps.map((c) => ({ id: c.id, status: c.status })),
       )
     }

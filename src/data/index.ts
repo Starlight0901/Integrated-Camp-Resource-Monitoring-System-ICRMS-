@@ -1,4 +1,55 @@
+export {
+  APP_ACRONYM,
+  APP_DOCUMENT_TITLE,
+  APP_NAME,
+  APP_NAME_OFFICIAL,
+} from './branding'
 export { dummyCamps, dummyTelemetry, dummyAlarms, getLiveTelemetrySnapshot, telemetryTimestamps } from './generateDataset'
+export { dummyDoras } from './doraDemoData'
+export {
+  DORA_DEMO_SEEDS,
+  DORA_FUEL_UNIT,
+  DORA_HISTORY_DAYS,
+  DORA_HISTORY_INTERVAL_MS,
+  DORA_HISTORY_POINT_COUNT,
+  DORA_HISTORY_POINTS_PER_DAY,
+  DORA_LIVE_MAX_DELTA,
+  DORA_LIVE_SIMULATOR_INTERVAL_MS,
+  DORA_LIVE_TELEMETRY_SIMULATOR,
+  DORA_POWER_UNIT,
+  DORA_RESOURCE_DEFINITIONS,
+  DORA_RESOURCE_ORDER,
+  DORA_RESOURCE_RANGES,
+  DORA_STATUS_THRESHOLDS,
+} from './doraConstants'
+export { getDoraHistoricalTimestamps } from './doraTimestamps'
+export type { DoraTelemetrySeries } from './doraTimestamps'
+export {
+  getDoraHistoricalRecord,
+  getDoraHistoricalSeries,
+  appendDoraLiveReadings,
+  getDoraHistoryLatestTimestamp,
+} from './doraHistoricalTelemetry'
+export {
+  subscribeDoraLive,
+  getLiveDoras,
+  getLiveDora,
+  advanceDoraLiveIfDue,
+  msUntilNextDoraLiveTick,
+  isDoraLiveSimulatorActive,
+  resetDoraLiveSimulator,
+} from './doraLiveSimulator'
+export {
+  clampDoraReadings,
+  deriveDoraStatus,
+  doraStatusRank,
+  worseDoraStatus,
+} from './doraStatusDerivation'
+export {
+  evaluateDoraFuelLevel,
+  evaluateDoraPowerConsumption,
+  evaluateDoraResourceThreshold,
+} from './doraThresholds'
 export { buildMetric, buildCampMetrics } from './helpers'
 export {
   CAMP_PROFILES,
@@ -44,6 +95,7 @@ export {
   telemetryValueAtIndex,
 } from './telemetrySnapshot'
 export { deriveAlarmsFromCamps, getActiveAlarms, getTopAlarmSeverity, getCampAlarmSeverity } from './alarmDerivation'
+export { deriveAlarmsFromDoras } from './doraAlarmDerivation'
 export {
   calculateCampOperationalStatus,
   calculateSystemOperationalStatus,

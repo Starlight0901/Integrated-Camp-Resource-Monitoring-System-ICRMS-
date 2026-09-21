@@ -3,9 +3,14 @@ import { MapPin } from 'lucide-react'
 export interface MapLegendProps {
   campCount: number
   activeAlarmCount: number
+  doraCount?: number
 }
 
-export function MapLegend({ campCount, activeAlarmCount }: MapLegendProps) {
+export function MapLegend({
+  campCount,
+  activeAlarmCount,
+  doraCount = 0,
+}: MapLegendProps) {
   return (
     <div className="pointer-events-none absolute bottom-3 right-3 z-[1000] sm:bottom-4 sm:right-4">
       <div className="pointer-events-auto rounded-cw-md border border-cw-border/80 bg-cw-surface/92 px-3 py-2.5 shadow-cw-card backdrop-blur-sm">
@@ -14,7 +19,10 @@ export function MapLegend({ campCount, activeAlarmCount }: MapLegendProps) {
           Sri Lanka
         </p>
         <p className="mt-1 text-[11px] text-cw-text-dim">
-          {campCount} sites · {activeAlarmCount} alarm{activeAlarmCount === 1 ? '' : 's'}
+          {campCount} sites
+          {doraCount > 0 ? ` · ${doraCount} DORAs` : ''}
+          {' · '}
+          {activeAlarmCount} alarm{activeAlarmCount === 1 ? '' : 's'}
         </p>
 
         <ul className="mt-2.5 hidden items-center gap-3 border-t border-cw-border-subtle pt-2.5 sm:flex">

@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Bell } from 'lucide-react'
-import type { Alarm, AlarmSeverity } from '@/types'
+import type { AlarmSeverity, SystemAlarm } from '@/types'
 import { cn } from '@/utils'
 import { getActiveAlarms, getTopAlarmSeverity } from '@/utils/alarms'
 import { Skeleton } from '@/components/ui'
-import { navigateToAlarmCamp } from './alarmNavigation'
+import { navigateToAlarm } from './alarmNavigation'
 import { AlarmListItem } from './AlarmListItem'
 
 export interface AlarmBellPanelProps {
-  alarms: Alarm[]
+  alarms: SystemAlarm[]
   loading?: boolean
   className?: string
 }
@@ -55,9 +55,9 @@ export function AlarmBellPanel({
     }
   }, [open])
 
-  const handleAlarmSelect = (alarm: Alarm) => {
+  const handleAlarmSelect = (alarm: SystemAlarm) => {
     setOpen(false)
-    navigateToAlarmCamp(navigate, alarm)
+    navigateToAlarm(navigate, alarm)
   }
 
   return (
@@ -104,7 +104,7 @@ export function AlarmBellPanel({
             <p className="mt-0.5 text-xs text-cw-text-muted">
               {loading
                 ? 'Loading…'
-                : `${activeAlarms.length} active across all monitored sites`}
+                : `${activeAlarms.length} active across camps and DORAs`}
             </p>
           </div>
 
@@ -124,7 +124,7 @@ export function AlarmBellPanel({
               </div>
             ) : activeAlarms.length === 0 ? (
               <p className="px-4 py-8 text-center text-sm text-cw-text-muted">
-                No active alarms. All camps within normal thresholds.
+                No active alarms. All camps and DORAs within normal thresholds.
               </p>
             ) : (
               activeAlarms.map((alarm) => (

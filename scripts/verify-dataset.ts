@@ -1,6 +1,6 @@
 import { dummyAlarms, dummyCamps, dummyTelemetry, TELEMETRY_POINT_COUNT } from '../src/data/index.ts'
 
-console.log('=== ICRMS Dummy Telemetry Verification ===')
+console.log('=== SLNAFMS Dummy Telemetry Verification ===')
 console.log(`Expected points per series: ${TELEMETRY_POINT_COUNT}\n`)
 
 for (const camp of dummyCamps) {

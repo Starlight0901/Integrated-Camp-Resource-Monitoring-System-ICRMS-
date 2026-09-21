@@ -1,15 +1,27 @@
-import type { Alarm } from '@/types'
+import type { SystemAlarm } from '@/types'
+import { isDoraAlarm } from '@/types'
 import { cn, getAlarmSeverityStyle, formatTelemetryByUnit, formatTime } from '@/utils'
 import { evaluateResource } from '@/monitoring'
 
 export interface AlarmListItemProps {
-  alarm: Alarm
-  onSelect: (alarm: Alarm) => void
+  alarm: SystemAlarm
+  onSelect: (alarm: SystemAlarm) => void
 }
 
 export function AlarmListItem({ alarm, onSelect }: AlarmListItemProps) {
   const style = getAlarmSeverityStyle(alarm.severity)
-  const evaluation = evaluateResource(alarm.metric, alarm.currentValue, alarm.unit)
+  const isDora = isDoraAlarm(alarm)
+  const campEvaluation = isDora
+    ? null
+    : evaluateResource(alarm.metric, alarm.currentValue, alarm.unit)
+  const title = isDora ? alarm.doraName : alarm.campName
+  const resourceLabel = isDora ? alarm.resourceLabel : alarm.metricLabel
+  const sourceLabel = isDora ? 'DORA' : 'Camp'
+  const actionLabel = isDora ? 'View DORA' : 'View Camp'
+  const reason = isDora ? alarm.reason : campEvaluation?.message
+  const recommendation = isDora ? null : campEvaluation?.recommendation
+  const threshold = isDora ? alarm.threshold : campEvaluation?.threshold
+  const unit = alarm.unit
 
   return (
     <button
@@ -23,39 +35,44 @@ export function AlarmListItem({ alarm, onSelect }: AlarmListItemProps) {
       )}
     >
       <div className="flex items-start justify-between gap-3">
-        <span
-          className={cn(
-            'inline-flex items-center gap-1.5 rounded-cw-sm border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider',
-            style.badge,
-          )}
-        >
-          <span className={cn('h-1.5 w-1.5 rounded-full', style.dot)} aria-hidden />
-          {alarm.severity}
+        <span className="flex flex-wrap items-center gap-1.5">
+          <span
+            className={cn(
+              'inline-flex items-center gap-1.5 rounded-cw-sm border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider',
+              style.badge,
+            )}
+          >
+            <span className={cn('h-1.5 w-1.5 rounded-full', style.dot)} aria-hidden />
+            {alarm.severity}
+          </span>
+          <span className="rounded-cw-sm border border-cw-border-subtle px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-cw-text-dim">
+            {sourceLabel}
+          </span>
         </span>
         <time dateTime={alarm.timestamp} className="text-[11px] tabular-nums text-cw-text-dim">
           {formatTime(alarm.timestamp)}
         </time>
       </div>
 
-      <p className="mt-2 text-sm font-semibold text-cw-text">{alarm.campName}</p>
-      <p className="mt-0.5 text-xs text-cw-text-muted">{alarm.metricLabel}</p>
+      <p className="mt-2 text-sm font-semibold text-cw-text">{title}</p>
+      <p className="mt-0.5 text-xs text-cw-text-muted">{resourceLabel}</p>
 
       <p className="cw-telemetry-value mt-2 text-base font-semibold text-cw-text">
-        {formatTelemetryByUnit(alarm.currentValue, alarm.unit)}
+        {formatTelemetryByUnit(alarm.currentValue, unit)}
       </p>
-      {evaluation.threshold != null && (
+      {threshold != null && (
         <p className="mt-0.5 text-xs text-cw-text-dim">
-          Threshold: {formatTelemetryByUnit(evaluation.threshold, evaluation.unit)}
+          Threshold: {formatTelemetryByUnit(threshold, unit)}
         </p>
       )}
 
-      <p className="mt-1 text-xs text-cw-text-muted">{evaluation.message}</p>
-      {evaluation.recommendation && (
-        <p className="mt-1 text-xs text-cw-text-dim">{evaluation.recommendation}</p>
+      <p className="mt-1 text-xs text-cw-text-muted">{reason}</p>
+      {recommendation && (
+        <p className="mt-1 text-xs text-cw-text-dim">{recommendation}</p>
       )}
 
       <p className="mt-2 text-[10px] font-medium uppercase tracking-wider text-cw-text-dim">
-        View Camp
+        {actionLabel}
       </p>
     </button>
   )
